@@ -1,0 +1,33 @@
+<div class="row pt-lg-5">
+  <div class="container col-md-12">
+    <div class="card">
+      <div class="card-header text-white bg-dark text-center">Price List</div>
+      <div class="card-body">
+
+        <div class="container">
+          <table class="table table-striped" >
+            <thead>
+            <tr>
+              <th rowspan="2" class="pb-4">Product</th>
+              <th colspan="6" class="text-center">Quantities (units)</th>
+            </tr>
+            <tr>
+              <th *ngFor="let quantity of initialUnitQuantities" >{{quantity}}</th>
+            </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let product of products">
+                <td>{{product.productName}}</td>
+                <ng-container *ngFor="let priceDetails of initialProductPriceDetails">
+                  <td *ngIf="product.productId == priceDetails.productId">{{priceDetails.totalPrice
+                    | currency : 'LKR ' : true : '1.2-2'}}</td>
+                </ng-container>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

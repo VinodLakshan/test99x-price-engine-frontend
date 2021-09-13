@@ -1,0 +1,104 @@
+<div class="row pt-lg-5">
+  <div class="container col-md-4">
+    <div class="card">
+      <div class="card-header text-white bg-dark text-center">Price Calculator</div>
+      <div class="card-body">
+        <h5 class="card-title mt-2">Select product details</h5>
+
+        <form class="row g-2" #productForm="ngForm" (ngSubmit)="calculatePrice(productForm)">
+          <div class="col-md-12">
+            <label for="productId" class="form-label">Product</label>
+            <select id="productId" name="productId" #productId="ngModel" class="form-select" required
+                    [ngClass]="{'is-invalid' : productForm.submitted && productId.invalid}"
+                    [(ngModel)]="productPriceDetails.productId">
+
+              <option selected disabled value="">Choose...</option>
+              <option *ngFor="let product of products" value="{{product.productId}}">{{product.productName}}</option>
+            </select>
+            <!-- Error -->
+            <div class="text-danger mt-1" *ngIf="productForm.submitted && productId.invalid">
+              <p *ngIf="productId.invalid">Please select the product.</p>
+            </div>
+          </div>
+
+          <fieldset class="row g-2">
+            <legend class="col-form-label col-md-12 pt-0">Quantity type</legend>
+            <div class="col-md-12">
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" #quantityType="ngModel" type="radio" name="quantityType" id="cartons" value="cartons" checked required
+                       [ngClass]="{'is-invalid' : productForm.submitted && quantityType.invalid}"
+                       [(ngModel)]="productPriceDetails.quantityType">
+                <label class="form-check-label" for="cartons">
+                  Cartons
+                </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" #quantityType="ngModel" name="quantityType" id="units" value="units" required
+                       [ngClass]="{'is-invalid' : productForm.submitted && quantityType.invalid}"
+                       [(ngModel)]="productPriceDetails.quantityType">
+                <label class="form-check-label" for="units">
+                  Units
+                </label>
+              </div>
+            </div>
+            <!-- Error -->
+            <div class="text-danger mt-1" *ngIf="productForm.submitted && quantityType.invalid">
+              <p *ngIf="quantityType.invalid">Please select a quantity type.</p>
+            </div>
+          </fieldset>
+
+          <div class="row g-2">
+            <label for="quantity" class="col-md-12 col-form-label">Quantity</label>
+            <div class="col-md-12">
+              <input type="number" min="1" value="0" class="form-control" id="quantity" name="quantity" #quantity="ngModel" required
+                     [ngClass]="{'is-invalid' : productForm.submitted && (quantity.value < 1 || quantity.invalid)}"
+                     [(ngModel)]="productPriceDetails.quantity">
+            </div>
+            <div class="text-danger mt-1" *ngIf="productForm.submitted && quantity.invalid">
+              <p *ngIf="quantity.invalid">Please select a quantity.</p>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary mt-4">Add to cart</button>
+
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="container col-md-8">
+      <div class="card cartCard">
+        <div class="card-header text-white bg-dark text-center">Cart</div>
+        <div class="card-body">
+          <div class="container cartTable">
+            <table class="table table-striped" >
+              <thead>
+              <tr>
+                <th>Product</th>
+                <th>Quantity Type</th>
+                <th>Quantity</th>
+                <th>Price</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let productDetail of productsInTheCart">
+                <td>{{productDetail.productName}}</td>
+                <td>{{productDetail.quantityType}}</td>
+                <td>{{productDetail.quantity}}</td>
+                <td>{{productDetail.totalPrice | currency : 'LKR ' : true : '1.2-2'}}</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+          <hr/>
+          <div class="container d-flex flex-row-reverse">
+            <span class="fs-4 fw-bold ">
+              Total Price :  {{totalPrice | currency : 'LKR ' : true : '1.2-2'}}
+            </span>
+          </div>
+
+        </div>
+      </div>
+
+  </div>
+</div>
